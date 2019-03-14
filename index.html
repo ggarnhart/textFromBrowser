@@ -41,7 +41,7 @@
       $("#send").click(() => {
         // we'll need to construct the message based on the bandwidth api
         var message = {
-          name: $("#phone-number").val(),
+          number: $("#phone-number").val(),
           message: $("#text-message").val()
         };
         console.log(message);
