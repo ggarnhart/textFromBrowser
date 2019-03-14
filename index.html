@@ -36,5 +36,21 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io();
+
+    $(() => {
+      $("#send").click(() => {
+        // we'll need to construct the message based on the bandwidth api
+        var message = {
+          name: $("#phone-number").val(),
+          message: $("#text-message").val()
+        };
+        console.log(message);
+        postMessage(message);
+      });
+    });
+
+    function postMessage(message) {
+      $.post("http://localhost:3000/messages", message);
+    }
   </script>
 </body>
