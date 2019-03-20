@@ -23,6 +23,7 @@ app.get("/messages", (req, res) => {
 // this is used so all the users stay in sync
 io.on("connect", socket => {
   console.log("A USER CONNECTED GUYS");
+  console.log(process.env.APISECRET); // this will only work on heroku i think
 });
 
 // Hey hey they're tyring to send something
