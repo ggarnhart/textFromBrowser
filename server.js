@@ -4,12 +4,15 @@ var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 var Bandwidth = require("node-bandwidth");
-var credentials = require("./credentials");
-console.log(credentials.apiSecret);
+// var credentials = require("./credentials");
+// console.log(credentials.apiSecret);
 var client = new Bandwidth({
-  userID: credentials.userID,
-  apiToken: credentials.apiToken,
-  apiSecret: credentials.apiSecret
+  // userID: credentials.userID,
+  // apiToken: credentials.apiToken,
+  // apiSecret: credentials.apiSecret
+  userId: process.env.USERID,
+  apiToken: process.env.APITOKEN,
+  apiSecret: process.env.APISECRET
 });
 
 app.use(express.static(__dirname));
