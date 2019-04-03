@@ -4,6 +4,7 @@ var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 var Bandwidth = require("node-bandwidth");
+var port = process.env.PORT || 3000;
 var client = new Bandwidth({
   userId: process.env.USERID,
   apiToken: process.env.APITOKEN,
@@ -41,6 +42,6 @@ app.post("/messages", async (req, res) => {
     });
 });
 
-var server = http.listen(3000, () => {
-  console.log("server is listening on port 3000 lets go");
+var server = http.listen(port, () => {
+  console.log("server is listening on port 3000 lets go"); // need to fix this because it probably won't be listening on this port haha
 });
