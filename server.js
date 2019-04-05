@@ -5,7 +5,7 @@ var http = require("http").Server(app);
 var io = require("socket.io")(http);
 var Bandwidth = require("node-bandwidth");
 var port = process.env.PORT || 3000;
-var client = new Bandwidth({
+var bandwidth_client = new Bandwidth({
   userId: process.env.USERID,
   apiToken: process.env.APITOKEN,
   apiSecret: process.env.APISECRET
@@ -19,18 +19,18 @@ const client = new Client({
   ssl: true
 });
 
-// client.connect();
+client.connect();
 
-// client.query(
-//   "SELECT table_schema,table_name FROM information_schema.tables;",
-//   (err, res) => {
-//     if (err) throw err;
-//     for (let row of res.rows) {
-//       console.log(JSON.stringify(row));
-//     }
-//     client.end();
-//   }
-// );
+client.query(
+  "SELECT table_schema,table_name FROM information_schema.tables;",
+  (err, res) => {
+    if (err) throw err;
+    for (let row of res.rows) {
+      console.log(JSON.stringify(row));
+    }
+    client.end();
+  }
+);
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -54,7 +54,7 @@ app.post("/messages", async (req, res) => {
     to: req.body.number,
     text: req.body.message
   };
-  client.Message.send(message)
+  bandwidth_client.Message.send(message)
     .then(function(message) {
       console.log("Just texted a message with an id of " + message.id);
     })
