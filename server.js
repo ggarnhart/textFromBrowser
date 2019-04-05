@@ -11,6 +11,9 @@ var client = new Bandwidth({
   apiSecret: process.env.APISECRET
 });
 
+var db_url = process.env.DATABASE_URL;
+console.log(db_url);
+
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
