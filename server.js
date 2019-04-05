@@ -11,8 +11,7 @@ var client = new Bandwidth({
   apiSecret: process.env.APISECRET
 });
 
-var db_url = process.env.DATABASE_URL;
-console.log(db_url);
+var db_url = process.env.DATABASE_URL; // this is the postgres url. idk what we do with it but still!
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
