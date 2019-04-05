@@ -41,9 +41,10 @@ app.get("/messages", (req, res) => {
 });
 
 // this is used so all the users stay in sync
-io.on("connect", socket => {
-  console.log("User connected to website.");
-});
+// TODO: this is broken i think
+// io.on("connect", socket => {
+//   console.log("User connected to website.");
+// });
 
 // Hey hey they're tyring to send something
 app.post("/messages", async (req, res) => {
