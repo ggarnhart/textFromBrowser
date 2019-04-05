@@ -21,16 +21,16 @@ const client = new Client({
 
 client.connect();
 
-client.query(
-  "SELECT table_schema,table_name FROM information_schema.tables;",
-  (err, res) => {
-    if (err) throw err;
-    for (let row of res.rows) {
-      console.log(JSON.stringify(row));
-    }
-    client.end();
-  }
-);
+// client.query(
+//   "SELECT table_schema,table_name FROM information_schema.tables;",
+//   (err, res) => {
+//     if (err) throw err;
+//     for (let row of res.rows) {
+//       console.log(JSON.stringify(row));
+//     }
+//     client.end();
+//   }
+// );
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -41,10 +41,9 @@ app.get("/messages", (req, res) => {
 });
 
 // this is used so all the users stay in sync
-// TODO: this is broken i think
-// io.on("connect", socket => {
-//   console.log("User connected to website.");
-// });
+io.on("connect", socket => {
+  console.log("User connected to website.");
+});
 
 // Hey hey they're tyring to send something
 app.post("/messages", async (req, res) => {
