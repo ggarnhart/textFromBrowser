@@ -32,8 +32,11 @@ io.on("connect", socket => {
 
 app.post("/callbacks", async (req, res) => {
   console.log(req);
+  console.log(req.message).catch(e => console.log(e));
+  console.log(req.body).catch(e => console.log(e));
+  console.log(req.body[0]).catch(e => console.log(e));
   let callback = req.body[0];
-  if (callback && callback.type === "message-received") {
+  if (callback && callback.eventType === "sms") {
     console.log(callback.message);
   } else {
     res.status(200).send();
