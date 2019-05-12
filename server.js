@@ -12,22 +12,14 @@ var bandwidth_client = new Bandwidth({
 });
 
 // heroku's postgres stuff
-const { Client } = require("pg");
-const client = new Client({
+const { Client, Pool } = require("pg");
+const pool = new Pool({
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   host: "ec2-54-243-241-62.compute-1.amazonaws.com",
   port: "5432",
   database: process.env.PGDATABASE
 });
-
-client
-  .connect()
-  .then(() => console.log("connected successfully"))
-  .then(() => client.query("select * from texts.sentMessages"))
-  .then(results => console.table(results))
-  .catch(e => console.log("Error connecting to database: " + e));
-client.end();
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -38,22 +30,29 @@ io.on("connect", socket => {
   console.log("User connected to website.");
 });
 
+app.post("callbacks", async (req, res) => {
+  console.log(req);
+  console.log(res);
+  console.log("hey we might be receiving a message haha");
+});
+
 // Hey hey they're tyring to send something
 app.post("/messages", async (req, res) => {
-  console.log("User trying to send a message");
-  console.log(req.body.message);
   var message = {
-    from: "+15712060489", // your registered Bandwidth Number
-    to: req.body.number,
-    text: req.body.message
+    fromnumber: "+15712060489", // your registered Bandwidth Number
+    tonumber: req.body.number,
+    message: req.body.message
   };
-  bandwidth_client.Message.send(message)
-    .then(function(message) {
-      console.log("Just texted a message with an id of " + message.id);
-    })
-    .catch(function(err) {
-      console.log(err.message);
-    });
+
+  if (message.tonumber != undefined && message.message != undefined) {
+    bandwidth_client.Message.send(message)
+      .then(function(message) {
+        console.log("Just texted a message with an id of " + message.id);
+      })
+      .catch(function(err) {
+        console.log(err.message);
+      });
+  }
 });
 
 var server = http.listen(port, () => {
