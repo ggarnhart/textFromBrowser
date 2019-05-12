@@ -32,7 +32,7 @@ io.on("connect", socket => {
 
 app.post("/callbacks", async (req, res) => {
   console.log(req.body.eventType);
-  console.log(req.body.message);
+  console.log(req.body.message.text);
   console.log(req.body.from);
 });
 
