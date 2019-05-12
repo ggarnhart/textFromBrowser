@@ -31,10 +31,6 @@ app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/messages", (req, res) => {
-  res.send("hello");
-});
-
 // this is used so all the users stay in sync
 io.on("connect", socket => {
   console.log("User connected to website.");
