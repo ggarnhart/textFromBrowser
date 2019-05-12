@@ -39,12 +39,12 @@ app.post("/callbacks", async (req, res) => {
 // Hey hey they're tyring to send something
 app.post("/messages", async (req, res) => {
   var message = {
-    fromnumber: "+15712060489", // your registered Bandwidth Number
-    tonumber: req.body.number,
-    message: req.body.message
+    from: "+15712060489", // your registered Bandwidth Number
+    to: req.body.number,
+    text: req.body.message
   };
 
-  if (message.tonumber != undefined && message.message != undefined) {
+  if (message.to != undefined && message.text != undefined) {
     bandwidth_client.Message.send(message)
       .then(function(message) {
         console.log("Just texted a message with an id of " + message.id);
