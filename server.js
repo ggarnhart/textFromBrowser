@@ -13,6 +13,19 @@ var bandwidth_client = new Bandwidth({
 
 // heroku's postgres stuff
 const { Client } = require("pg");
+const client = new Client({
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  host: "ec2-54-243-241-62.compute-1.amazonaws.com",
+  port: "5432",
+  database: process.env.PGDATABASE
+});
+
+client
+  .connect()
+  .then(() => console.log("connected successfully"))
+  .catch(e => console.log(e));
+client.end();
 
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
@@ -21,16 +34,16 @@ const client = new Client({
 
 client.connect();
 
-client.query(
-  "SELECT table_schema,table_name FROM information_schema.tables;",
-  (err, res) => {
-    if (err) throw err;
-    for (let row of res.rows) {
-      console.log(JSON.stringify(row));
-    }
-    client.end();
-  }
-);
+// client.query(
+//   "SELECT table_schema,table_name FROM information_schema.tables;",
+//   (err, res) => {
+//     if (err) throw err;
+//     for (let row of res.rows) {
+//       console.log(JSON.stringify(row));
+//     }
+//     client.end();
+//   }
+// );
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
