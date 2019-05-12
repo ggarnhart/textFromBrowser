@@ -24,19 +24,8 @@ const client = new Client({
 client
   .connect()
   .then(() => console.log("connected successfully"))
-  .catch(e => console.log(e));
+  .catch(e => console.log("Error connecting to database: " + e));
 client.end();
-
-// client.query(
-//   "SELECT table_schema,table_name FROM information_schema.tables;",
-//   (err, res) => {
-//     if (err) throw err;
-//     for (let row of res.rows) {
-//       console.log(JSON.stringify(row));
-//     }
-//     client.end();
-//   }
-// );
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
