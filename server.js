@@ -33,9 +33,8 @@ io.on("connect", socket => {
 app.post("/callbacks", async (req, res) => {
   console.log(req.body.eventType);
   console.log(req.body.from);
-
-  // the below still need to be fixed
   console.log(req.body.text);
+  console.log(req.body.to);
 });
 
 // Hey hey they're tyring to send something
