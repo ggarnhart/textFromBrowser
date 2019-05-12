@@ -24,6 +24,8 @@ const client = new Client({
 client
   .connect()
   .then(() => console.log("connected successfully"))
+  .then(() => client.query("select * from texts.sentMessages"))
+  .then(results => console.table(results))
   .catch(e => console.log("Error connecting to database: " + e));
 client.end();
 
