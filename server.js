@@ -30,7 +30,7 @@ io.on("connect", socket => {
   console.log("User connected to website.");
 });
 
-app.post("callbacks", async (req, res) => {
+app.post("/callbacks", async (req, res) => {
   console.log(req);
   console.log(res);
   console.log("hey we might be receiving a message haha");
