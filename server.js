@@ -31,10 +31,35 @@ io.on("connect", socket => {
 });
 
 app.post("/callbacks", async (req, res) => {
-  console.log(req.body.eventType);
-  console.log(req.body.from);
-  console.log(req.body.text);
-  console.log(req.body.to);
+  if (req.body.eventType === "sms") {
+    let from = req.body.from;
+    let to = req.body.to;
+    let text = req.body.text;
+
+    pool.query("SELECT eventcode FROM event", (err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(res); // idk what this does yet but here we are
+      }
+    });
+
+    var insertString =
+      "INSERT INTO receivedMessages(id, myPhoneNumber, theirPhoneNumber, message) VALUES(DEFAULT, $1, $2, $3)";
+    var values = [to, from, text];
+    pool.query(insertString, values, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+      } else {
+        console.log(res.rows[0]);
+        // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
+      }
+    });
+
+    // let's put these in a database.
+
+    // then, let's send a response?
+  }
 });
 
 // Hey hey they're tyring to send something
