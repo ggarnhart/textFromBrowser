@@ -38,6 +38,15 @@ app.post("/callbacks", async (req, res) => {
 
     console.log("checking text against event logs");
     //console.log(checkEventMatches(text));
+    pool.query("SELECT eventcode FROM event", (err, res) => {
+      if (err) {
+        console.log("Error");
+        console.log(err);
+      } else {
+        console.log("made it here");
+        console.log(res.rows.includes(text));
+      }
+    });
 
     var insertString =
       "INSERT INTO receivedMessages(id, myPhoneNumber, theirPhoneNumber, message) VALUES(DEFAULT, $1, $2, $3)";
