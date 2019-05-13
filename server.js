@@ -82,6 +82,15 @@ var server = http.listen(port, () => {
 
 function checkEventMatches(text) {
   // query for all eventCodes.
+
+  const pool = new Pool({
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    host: "ec2-54-243-241-62.compute-1.amazonaws.com",
+    port: "5432",
+    database: process.env.PGDATABASE
+  });
+
   pool.query("SELECT eventcode FROM event", (err, res) => {
     if (err) {
       console.log("Error");
