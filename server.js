@@ -37,7 +37,7 @@ app.post("/callbacks", async (req, res) => {
     let text = req.body.text;
 
     console.log("checking text against event logs");
-    console.log(checkEventMatches(text));
+    //console.log(checkEventMatches(text));
 
     var insertString =
       "INSERT INTO receivedMessages(id, myPhoneNumber, theirPhoneNumber, message) VALUES(DEFAULT, $1, $2, $3)";
@@ -47,7 +47,6 @@ app.post("/callbacks", async (req, res) => {
         console.log(err.stack);
       } else {
         console.log(res.rows[0]);
-        // { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
       }
     });
 
@@ -80,17 +79,9 @@ var server = http.listen(port, () => {
   console.log("server is up and running.");
 });
 
+// this does not work rn. Currently just placing this code back up there.
 function checkEventMatches(text) {
   // query for all eventCodes.
-
-  const pool = new Pool({
-    user: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
-    host: "ec2-54-243-241-62.compute-1.amazonaws.com",
-    port: "5432",
-    database: process.env.PGDATABASE
-  });
-
   pool.query("SELECT eventcode FROM event", (err, res) => {
     if (err) {
       console.log("Error");
