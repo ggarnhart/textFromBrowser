@@ -36,13 +36,8 @@ app.post("/callbacks", async (req, res) => {
     let to = req.body.to;
     let text = req.body.text;
 
-    pool.query("SELECT eventcode FROM event", (err, res) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(res); // idk what this does yet but here we are
-      }
-    });
+    console.log("checking text against event logs");
+    console.log(checkEventMatches(text));
 
     var insertString =
       "INSERT INTO receivedMessages(id, myPhoneNumber, theirPhoneNumber, message) VALUES(DEFAULT, $1, $2, $3)";
@@ -84,3 +79,14 @@ app.post("/messages", async (req, res) => {
 var server = http.listen(port, () => {
   console.log("server is up and running.");
 });
+
+function checkEventMatches(text) {
+  // query for all eventCodes.
+  pool.query("SELECT eventcode FROM event", (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      return res.rows.includes(text);
+    }
+  });
+}
