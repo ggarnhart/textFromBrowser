@@ -84,6 +84,7 @@ function checkEventMatches(text) {
   // query for all eventCodes.
   pool.query("SELECT eventcode FROM event", (err, res) => {
     if (err) {
+      console.log("Error");
       console.log(err);
     } else {
       return res.rows.includes(text);
