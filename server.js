@@ -44,7 +44,7 @@ app.post("/callbacks", async (req, res) => {
         console.log(err);
       } else {
         console.log(res.rows);
-        var count = parseInteger(res.rows.attendeecount);
+        var count = parseInt(res.rows.attendeecount);
         count = count + 1;
         console.log("new count: ", count);
         // TODO: update column value.
