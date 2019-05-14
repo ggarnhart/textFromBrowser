@@ -38,17 +38,19 @@ app.post("/callbacks", async (req, res) => {
 
     console.log("checking text against event logs");
     //console.log(checkEventMatches(text));
-    pool.query("SELECT eventcode FROM event", (err, res) => {
+    pool.query("SELECT attendeecount FROM event WHERE active", (err, res) => {
       if (err) {
         console.log("Error");
         console.log(err);
       } else {
-        console.log("made it here");
-        res.rows.forEach(function(row) {
-          if (row.eventcode == message) {
-            io.emit("checkedIn", newCheckInCount);
-          }
-        });
+        var count = res.rows.attendeecount;
+        count = count + 1;
+        io.emit("checkedIn", newCheckInCount);
+        // res.rows.forEach(function(row) {
+        //   if (row.eventcode == message) {
+        //     io.emit("checkedIn", newCheckInCount);
+        //   }
+        // });
       }
     });
 
