@@ -45,7 +45,10 @@ app.post("/callbacks", async (req, res) => {
       } else {
         var count = res.rows.attendeecount;
         count = count + 1;
-        io.emit("checkedIn", newCheckInCount);
+        console.log("new count: ", count);
+        // TODO: update column value.
+        io.emit("checkedIn", count);
+
         // res.rows.forEach(function(row) {
         //   if (row.eventcode == message) {
         //     io.emit("checkedIn", newCheckInCount);
