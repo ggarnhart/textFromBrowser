@@ -44,7 +44,11 @@ app.post("/callbacks", async (req, res) => {
         console.log(err);
       } else {
         console.log("made it here");
-        console.log(res.rows.includes(text));
+        res.rows.forEach(function(row) {
+          if (row.eventcode == message) {
+            io.emit("checkedIn", newCheckInCount);
+          }
+        });
       }
     });
 

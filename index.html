@@ -6,27 +6,20 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
     crossorigin="anonymous"
   />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container row">
-    <div class="col-md-6">
-      <h1>Text From the Web</h1>
-      <input
-        type="text"
-        id="phone-number"
-        class="form-control"
-        placeholder="Recipient's Number"
-      />
-      <br />
-      <input
-        type="text"
-        id="text-message"
-        class="form-control"
-        placeholder="Your Text Message"
-      />
-      <br />
-      <button id="send" class="btn btn-success">Send Message</button>
-    </div>
+  <div class="centerFlex">
+    <h1 class="lighter bigger">Hey There.</h1>
+    <h2>If you have not checked in, please do so by texting</h2>
+    <h2 class="heavier">(571) 206-0489</h2>
+    <h2>the following message:</h2>
+    <h2 class="heavier">@MillerEC-1693</h2>
+
+    <br />
+    <h2>So far, <span id="checkInCount">0</span> people have checked in.</h2>
+
+    <button onclick="postCheckin()">simulate text message</button>
   </div>
 
   <script
@@ -47,16 +40,7 @@
   <script>
     var socket = io();
 
-    $(() => {
-      $("#send").click(() => {
-        // we'll need to construct the message based on the bandwidth api
-        var message = {
-          number: $("#phone-number").val(),
-          message: $("#text-message").val()
-        };
-        postMessage(message);
-      });
-    });
+    $(() => {});
 
     function postMessage(message) {
       $.post("https://text-from-browser.herokuapp.com/messages", message);
