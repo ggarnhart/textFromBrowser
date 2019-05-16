@@ -34,37 +34,19 @@ io.on("connect", socket => {
 
 app.post("/callbacks", async (req, res) => {
   if (req.body.eventType === "sms") {
-    console.log(req.body);
-    let from = req.body.from;
-    console.log("the text was from: ", from);
-    let to = req.body.to;
-    console.log("the text was to: ", to);
+    let from = req.body.from; // the person sending the text :)
+    let to = req.body.to; // the bandwidth number
     let text = req.body.text;
-
-    console.log("checking text against event logs");
-    //console.log(checkEventMatches(text));
     pool.query(
       "SELECT id, attendeecount FROM event WHERE active",
       (err, res) => {
-        if (err) {
-          console.log("Error");
-          console.log(err);
-        } else {
-          console.log(res.rows);
-          var count = res.rows[0].attendeecount;
-          var id = res.rows[0].id;
-          count = count + 1;
-
-          const update_string =
-            "update event set attendeecount=$1 where id =$2;";
-          const values = [count, id];
-
-          pool.query(update_string, values, (err, res) => {
-            if (err) {
-              console.log(err);
-            }
-          });
-          io.emit("checkedIn", count);
+        console.log(res.rows);
+        var count = res.rows[0].attendeecount;
+        var id = res.rows[0].id;
+        var numberArray = res.rows[0].receivednumbers;
+        console.log("hey", numberArray);
+        if (checkUniqueNumber(numberArray, receivedNumber)) {
+          checkNewNumberIn(count, id, numberArray, receivedNumber);
         }
       }
     );
@@ -128,6 +110,33 @@ function loadOldData() {
       console.log(err);
     } else {
       io.emit("checkedIn", res.rows[0].attendeecount);
+    }
+  });
+}
+
+function checkUniqueNumber(arr, receivedNumber) {
+  if (receivedNumber != undefined) {
+    const desiredNumber = receivedNumber.replace(/[^\w]/gi, "");
+    console.log(arr.includes(desiredNumber));
+    return !arr.includes(desiredNumber);
+  } else {
+    // true will stop the process as it acts as though the number is already in the array.
+    return true;
+  }
+}
+
+function checkNewNumberIn(count, id, numberArray, receivedNumber) {
+  let updatedCount = count + 1;
+  const desiredNumber = receivedNumber.replace(/[^\w]/gi, "");
+  numberArray.push(desiredNumber);
+  const update_string =
+    "update event set attendeecount=$1, receivednumbers=$2 where id=$3";
+  const values = [updatedCount, numberArray, id];
+  pool.query(update_string, values, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      io.emit("checkedIn", count);
     }
   });
 }
