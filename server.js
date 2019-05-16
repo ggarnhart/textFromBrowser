@@ -34,6 +34,7 @@ io.on("connect", socket => {
 
 app.post("/callbacks", async (req, res) => {
   if (req.body.eventType === "sms") {
+    console.log(req.body);
     let from = req.body.from;
     console.log("the text was from: ", from);
     let to = req.body.to;
