@@ -40,6 +40,11 @@
 
     $(() => {});
 
+    socket.on("checkedin", function(number) {
+      console.log(number);
+      $("#checkInCount").html(number);
+    });
+
     function postMessage(message) {
       $.post("https://text-from-browser.herokuapp.com/messages", message);
     }
