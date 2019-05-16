@@ -25,6 +25,8 @@ app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+loadOldData();
+
 // this is used so all the users stay in sync
 io.on("connect", socket => {
   console.log("User connected to website.");
@@ -113,6 +115,16 @@ function checkEventMatches(text) {
       console.log(err);
     } else {
       return res.rows.includes(text);
+    }
+  });
+}
+
+function loadOldData() {
+  pool.query("SELECT id, attendeecount FROM event WHERE active", (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      io.emit("checkedIn", res.rows[0].attendeecount);
     }
   });
 }

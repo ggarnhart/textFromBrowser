@@ -40,7 +40,7 @@
 
     $(() => {});
 
-    socket.on("checkedin", function(number) {
+    socket.on("checkedIn", function(number) {
       console.log(number);
       $("#checkInCount").html(number);
     });
