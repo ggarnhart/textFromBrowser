@@ -38,25 +38,31 @@ app.post("/callbacks", async (req, res) => {
 
     console.log("checking text against event logs");
     //console.log(checkEventMatches(text));
-    pool.query("SELECT attendeecount FROM event WHERE active", (err, res) => {
-      if (err) {
-        console.log("Error");
-        console.log(err);
-      } else {
-        console.log(res.rows);
-        var count = parseInt(res.rows.attendeecount);
-        count = count + 1;
-        console.log("new count: ", count);
-        // TODO: update column value.
-        io.emit("checkedIn", count);
+    pool.query(
+      "SELECT id, attendeecount FROM event WHERE active",
+      (err, res) => {
+        if (err) {
+          console.log("Error");
+          console.log(err);
+        } else {
+          console.log(res.rows);
+          var count = res.rows[0].attendeecount;
+          var id = res.rows[0].id;
+          count = count + 1;
 
-        // res.rows.forEach(function(row) {
-        //   if (row.eventcode == message) {
-        //     io.emit("checkedIn", newCheckInCount);
-        //   }
-        // });
+          const update_string =
+            "update event set attendeecount=$1 where id =$2;";
+          const values = [count, id];
+
+          pool.query(update_string, values, (err, res) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+          io.emit("checkedIn", count);
+        }
       }
-    });
+    );
 
     var insertString =
       "INSERT INTO receivedMessages(id, myPhoneNumber, theirPhoneNumber, message) VALUES(DEFAULT, $1, $2, $3)";
